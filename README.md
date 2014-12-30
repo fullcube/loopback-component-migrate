@@ -19,12 +19,12 @@ Options:
 <h2>Using the CLI directly</h2>
 Run all new migrations that have not previously been run, using datasources.json and database 'db':
 ```javascript
-node node_modules/loopback-db-migrate/loopback-db-migrate.js up
+./node_modules/loopback-db-migrate/loopback-db-migrate.js up
 ```
 
 Run all new migrations since 01012014 that have not previously been run, using datasources.json and datasources.qa.json and database 'my_db_name':
 ```javascript
-NODE_ENV=qa node node_modules/loopback-db-migrate/loopback-db-migrate.js up --database my_db_name --since 01012014
+NODE_ENV=qa ./node_modules/loopback-db-migrate/loopback-db-migrate.js up --database my_db_name --since 01012014
 ```
 
 <h2>Using the CLI with npm by updating your package.json</h2>:
