@@ -3,6 +3,8 @@ Migrations that have been run will be stored in a table called 'Migrations'.
 The library will read the loopback datasources.json files based on the NODE_ENV environment variable just like loopback does.
 The usage is based on the node-db-migrate project.
 
+<strong>NOTE: This does not currently work with the loopback in memory DB.</strong>
+
 <h2>CLI Usage</h2>
 ```
 loopback-db-migrate [up|down|create] [options]
