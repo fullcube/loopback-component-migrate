@@ -1,16 +1,19 @@
 {
-    "name": "loopback-db-migrate",
-    "version": "0.0.1",
-    "author": {
-        "name": "Scott Lively"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/slively/loopback-db-migrate.git"
-    },
-    "main": "./loopback-db-migrate.js",
-    "bin": {
-        "loopback-db-migrate": "./loopback-db-migrate.js"
-    },
-    "dependencies": {}
+  "name": "loopback-db-migrate",
+  "version": "0.0.1",
+  "author": {
+    "name": "Scott Lively"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slively/loopback-db-migrate.git"
+  },
+  "main": "./loopback-db-migrate.js",
+  "bin": {
+    "loopback-db-migrate": "./loopback-db-migrate.js"
+  },
+  "bugs": {
+    "url": "https://github.com/slively/loopback-db-migrate/issues"
+  },
+  "homepage": "https://github.com/slively/loopback-db-migrate"
 }

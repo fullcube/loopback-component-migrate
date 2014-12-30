@@ -1,8 +1,19 @@
 #!/usr/bin/env node
 'use strict';
 
-var dbName = process.argv[process.argv.indexOf('--name') + 1] || 'db',
+var fs = require('fs'),
+    dbNameFlag = process.argv.indexOf('--database'),
+    dbName = (dbNameFlag > -1) ? process.argv[dbNameFlag + 1] : 'db',
+    dateSinceFlag = process.argv.indexOf('--since'),
+    dateSinceFilter = (dateSinceFlag > -1) ? process.argv[dateSinceFlag + 1] : '',
+    migrationsFolder = process.cwd() + '/server/migrations/',
+    dbMigrationsFolder = migrationsFolder+dbName,
     datasource = require(process.cwd() + '/server/server.js').dataSources[dbName];
+
+if (!datasource) {
+    console.log('datasource \'' + dbName + '\' not found!');
+    process.exit();
+}
 
 datasource.createModel('Migration', {
     "name": {
@@ -13,21 +24,141 @@ datasource.createModel('Migration', {
             "unique": true
         }
     },
+    "db": {
+        "type": "String",
+        "required": true
+    },
     "runDtTm": {
         "type": "Date",
         "required": true
     }
 });
 
+// make migration folders if they don't exist
+try {
+    fs.mkdirSync(migrationsFolder);
+} catch (e) {}
+try {
+    fs.mkdirSync(dbMigrationsFolder);
+} catch (e) {}
 
-// create table if not exists
-datasource.autoupdate('Migration', function(){
-    datasource.models.Migration.find(function(err, results){
-        if (err) {
-            console.log('Error retrieving migrations:');
-            return console.log(err.stack);
-        }
+function mapScriptObjName(scriptObj){
+    return scriptObj.name;
+}
 
-        console.log(results);
-    })
-});
+function findScriptsToRun(upOrDown, cb) {
+    var filters = {
+        where: {
+            name: { gte: dateSinceFilter+'' || '' }
+        },
+        order: (upOrDown === 'up' ) ? 'name ASC' : 'name DESC'
+    };
+
+    // get all local scripts and sort by name/date
+    var localScriptNames = fs.readdirSync(dbMigrationsFolder);
+
+    // create table if not exists
+    datasource.autoupdate('Migration', function () {
+
+        // get all scripts that have been run from DB
+        datasource.models.Migration.find(filters, function (err, scriptsRun) {
+            if (err) {
+                console.log('Error retrieving migrations:');
+                return console.log(err.stack);
+            }
+
+            if (upOrDown === 'up') {
+                var runScriptsNames = scriptsRun.map(mapScriptObjName);
+
+                // return scripts that exist on disk but not in the db
+                cb(localScriptNames.filter(function (scriptName) {
+                    return runScriptsNames.indexOf(scriptName) < 0;
+                }));
+            } else {
+                // return all db script names
+                cb(scriptsRun.map(mapScriptObjName));
+            }
+        });
+    });
+}
+
+function migrateScripts(upOrDown) {
+    return function findAndRunScripts() {
+        findScriptsToRun(upOrDown, function runScripts(scriptsToRun) {
+            var migrationCallStack = [],
+                migrationCallIndex = 0;
+
+            scriptsToRun.forEach(function (localScriptName) {
+                migrationCallStack.push(function () {
+
+                    // keep calling scripts recursively until we are done, then exit
+                    function runNextScript(err) {
+                        if (err) {
+                            console.log('Error saving migration', localScriptName, 'to database!');
+                            console.log(err.stack);
+                            return;
+                        }
+
+                        console.log(localScriptName, 'finished sucessfully.');
+                        migrationCallIndex++;
+                        if (migrationCallIndex < migrationCallStack.length) {
+                            migrationCallStack[migrationCallIndex]();
+                        } else {
+                            process.exit();
+                        }
+                    }
+
+                    try {
+                        // include the script, run the up/down function, update the migrations table, and continue
+                        console.log(localScriptName, 'running.');
+                        require(dbMigrationsFolder + '/' + localScriptName)[upOrDown](datasource, function () {
+                            if (upOrDown === 'up') {
+                                datasource.models.Migration.create({
+                                    name: localScriptName,
+                                    db: dbName,
+                                    runDtTm: new Date()
+                                }, runNextScript);
+                            } else {
+                                datasource.models.Migration.destroyAll({
+                                    name: localScriptName
+                                }, runNextScript);
+                            }
+                        });
+                    } catch (e) {
+                        console.log('Error running migration', localScriptName);
+                        console.log(e.stack);
+                    }
+                });
+            });
+
+            // kick off recursive calls
+            if (migrationCallStack.length) {
+                migrationCallStack[migrationCallIndex]();
+            } else {
+                console.log('No new migrations to run.');
+                process.exit();
+            }
+        });
+    }
+}
+
+var cmds = {
+    up: migrateScripts('up'),
+    down: migrateScripts('down'),
+    create: function create() {
+        var cmdLineName = process.argv[process.argv.indexOf('create') + 1],
+            d = new Date(),
+            dateString = d.getFullYear() +''+ (d.getMonth()+1) + d.getDate() + d.getHours() + d.getMinutes() + d.getSeconds(),
+            fileName = '/' + dateString + (cmdLineName && cmdLineName.indexOf('--') === -1 ? '-' + cmdLineName : '') + '.js';
+
+        fs.writeFileSync(dbMigrationsFolder + fileName, fs.readFileSync(__dirname + '/migration-skeleton.js'));
+    }
+};
+
+var cmdNames = Object.keys(cmds);
+
+for ( var i = 0 ; i < cmdNames.length; i++ ) {
+    if (process.argv.indexOf(cmdNames[i]) > -1) {
+        return cmds[cmdNames[i]]();
+    }
+}
