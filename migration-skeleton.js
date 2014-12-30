@@ -1,8 +1,8 @@
 module.exports = {
-    up: function(datasource, next) {
+    up: function(dataSource, next) {
         next();
     },
-    down: function(datasource, next) {
+    down: function(dataSource, next) {
         next();
     }
 };
