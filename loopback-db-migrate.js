@@ -2,7 +2,7 @@
 'use strict';
 
 var fs = require('fs'),
-    dbNameFlag = process.argv.indexOf('--database'),
+    dbNameFlag = process.argv.indexOf('--datasource'),
     dbName = (dbNameFlag > -1) ? process.argv[dbNameFlag + 1] : 'db',
     dateSinceFlag = process.argv.indexOf('--since'),
     dateSinceFilter = (dateSinceFlag > -1) ? process.argv[dateSinceFlag + 1] : '',

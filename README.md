@@ -12,7 +12,7 @@ loopback-db-migrate [up|down|create] [options]
 Down migrations are run in reverse run order.
 
 Options:
-  --database specify database name (optional, default: db)
+  --datasource specify database name (optional, default: db)
   --since specify date to run migrations from (options, default: run all migrations)
 ```
 
@@ -24,14 +24,14 @@ Run all new migrations that have not previously been run, using datasources.json
 
 Run all new migrations since 01012014 that have not previously been run, using datasources.json and datasources.qa.json and database 'my_db_name':
 ```javascript
-NODE_ENV=qa ./node_modules/loopback-db-migrate/loopback-db-migrate.js up --database my_db_name --since 01012014
+NODE_ENV=qa ./node_modules/loopback-db-migrate/loopback-db-migrate.js up --datasource my_db_name --since 01012014
 ```
 
 <h2>Using the CLI with npm by updating your package.json</h2>:
 ```javascript
 "scripts": {
-  "migrate-db-up": "loopback-db-migrate up --database some_db_name",
-  "migrate-db-down": "loopback-db-migrate down --database some_db_name"
+  "migrate-db-up": "loopback-db-migrate up --datasource some_db_name",
+  "migrate-db-down": "loopback-db-migrate down --datasource some_db_name"
 }
 
 npm run-script migrate-db-up
