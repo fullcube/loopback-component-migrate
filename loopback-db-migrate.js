@@ -111,8 +111,12 @@ function migrateScripts(upOrDown) {
                     try {
                         // include the script, run the up/down function, update the migrations table, and continue
                         console.log(localScriptName, 'running.');
-                        require(dbMigrationsFolder + '/' + localScriptName)[upOrDown](datasource, function () {
-                            if (upOrDown === 'up') {
+                        require(dbMigrationsFolder + '/' + localScriptName)[upOrDown](datasource, function (err) {
+                            if (err) {
+                                console.log(localScriptName, 'error:');
+                                console.log(err.stack);
+                                process.exit();
+                            } else if (upOrDown === 'up') {
                                 datasource.models.Migration.create({
                                     name: localScriptName,
                                     db: dbName,
@@ -127,6 +131,7 @@ function migrateScripts(upOrDown) {
                     } catch (e) {
                         console.log('Error running migration', localScriptName);
                         console.log(e.stack);
+                        process.exit();
                     }
                 });
             });
@@ -142,13 +147,23 @@ function migrateScripts(upOrDown) {
     }
 }
 
+function stringifyAndPad(num) {
+    var str = num + '';
+    return (str.length === 1) ? str + '0' : str;
+}
 var cmds = {
     up: migrateScripts('up'),
     down: migrateScripts('down'),
     create: function create() {
         var cmdLineName = process.argv[process.argv.indexOf('create') + 1],
             d = new Date(),
-            dateString = d.getFullYear() +''+ (d.getMonth()+1) + d.getDate() + d.getHours() + d.getMinutes() + d.getSeconds(),
+            year = d.getFullYear() + '',
+            month = (d.getMonth()+1) + '',
+            day = d.getDate() + '',
+            hours = stringifyAndPad(d.getHours()),
+            minutes = stringifyAndPad(d.getMinutes()),
+            seconds = stringifyAndPad(d.getSeconds()),
+            dateString = year + month + day + hours +  minutes + seconds,
             fileName = '/' + dateString + (cmdLineName && cmdLineName.indexOf('--') === -1 ? '-' + cmdLineName : '') + '.js';
 
         fs.writeFileSync(dbMigrationsFolder + fileName, fs.readFileSync(__dirname + '/migration-skeleton.js'));
