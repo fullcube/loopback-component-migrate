@@ -12,7 +12,7 @@ var fs = require('fs'),
 
 if (!datasource) {
     console.log('datasource \'' + dbName + '\' not found!');
-    process.exit();
+    process.exit(1);
 }
 
 datasource.createModel('Migration', {
@@ -58,13 +58,19 @@ function findScriptsToRun(upOrDown, cb) {
     var localScriptNames = fs.readdirSync(dbMigrationsFolder);
 
     // create table if not exists
-    datasource.autoupdate('Migration', function () {
+    datasource.autoupdate('Migration', function (err) {
+        if (err) {
+            console.log('Error retrieving migrations:');
+            console.log(err.stack);
+            process.exit(1);
+        }
 
         // get all scripts that have been run from DB
         datasource.models.Migration.find(filters, function (err, scriptsRun) {
             if (err) {
                 console.log('Error retrieving migrations:');
-                return console.log(err.stack);
+                console.log(err.stack);
+                process.exit(1);
             }
 
             if (upOrDown === 'up') {
@@ -96,7 +102,7 @@ function migrateScripts(upOrDown) {
                         if (err) {
                             console.log('Error saving migration', localScriptName, 'to database!');
                             console.log(err.stack);
-                            return;
+                            process.exit(1);;
                         }
 
                         console.log(localScriptName, 'finished sucessfully.');
@@ -115,7 +121,7 @@ function migrateScripts(upOrDown) {
                             if (err) {
                                 console.log(localScriptName, 'error:');
                                 console.log(err.stack);
-                                process.exit();
+                                process.exit(1);
                             } else if (upOrDown === 'up') {
                                 datasource.models.Migration.create({
                                     name: localScriptName,
@@ -131,7 +137,7 @@ function migrateScripts(upOrDown) {
                     } catch (e) {
                         console.log('Error running migration', localScriptName);
                         console.log(e.stack);
-                        process.exit();
+                        process.exit(1);
                     }
                 });
             });
