@@ -20,12 +20,14 @@ datasource.createModel('Migration', {
         "id": true,
         "type": "String",
         "required": true,
+        "length": 100,
         "index": {
             "unique": true
         }
     },
     "db": {
         "type": "String",
+        "length": 100,
         "required": true
     },
     "runDtTm": {
