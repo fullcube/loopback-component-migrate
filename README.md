@@ -27,7 +27,7 @@ Run all new migrations since 01012014 that have not previously been run, using d
 NODE_ENV=qa ./node_modules/loopback-db-migrate/loopback-db-migrate.js up --datasource my_db_name --since 01012014
 ```
 
-<h2>Using the CLI with npm by updating your package.json</h2>:
+<h2>Using the CLI with npm by updating your package.json</h2>
 ```javascript
 "scripts": {
   "migrate-db-up": "loopback-db-migrate up --datasource some_db_name",
@@ -39,4 +39,27 @@ npm run-script migrate-db-down
 
 NODE_ENV=production npm run-script migrate-db-up
 NODE_ENV=production npm run-script migrate-db-down
+```
+
+<h2>Example migrations</h2>
+```javascript
+module.exports = {
+    up: function(dataSource, next) {
+        dataSource.models.Users.create({ ... }, next);
+    },
+    down: function(dataSource, next) {
+        dataSource.models.Users.destroy({ ... }, next);
+    }
+};
+```
+```javascript
+/* executing raw sql */
+module.exports = {
+    up: function(dataSource, next) {
+        dataSource.connector.query('CREATE TABLE `my_table` ...;', next);
+    },
+    down: function(dataSource, next) {
+        dataSource.connector.query('DROP TABLE `my_table`;', next);
+    }
+};
 ```
