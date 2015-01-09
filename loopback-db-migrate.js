@@ -2,6 +2,7 @@
 'use strict';
 
 var fs = require('fs'),
+    prompt = require('cli-prompt'),
     dbNameFlag = process.argv.indexOf('--datasource'),
     dbName = (dbNameFlag > -1) ? process.argv[dbNameFlag + 1] : 'db',
     dateSinceFlag = process.argv.indexOf('--since'),
@@ -159,12 +160,18 @@ function stringifyAndPad(num) {
     var str = num + '';
     return (str.length === 1) ? str + '0' : str;
 }
+
 var cmds = {
     up: migrateScripts('up'),
     down: migrateScripts('down'),
-    create: function create() {
-        var cmdLineName = process.argv[process.argv.indexOf('create') + 1],
-            d = new Date(),
+    create: function create(name) {
+        var cmdLineName = name || process.argv[process.argv.indexOf('create') + 1];
+
+        if (!cmdLineName) {
+            return prompt('Enter migration script name:', create);
+        }
+
+        var d = new Date(),
             year = d.getFullYear() + '',
             month = (d.getMonth()+1) + '',
             day = d.getDate() + '',

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/slively/loopback-db-migrate/issues"
   },
-  "homepage": "https://github.com/slively/loopback-db-migrate"
+  "homepage": "https://github.com/slively/loopback-db-migrate",
+  "dependencies": {
+    "cli-prompt": "^0.4.1"
+  }
 }
