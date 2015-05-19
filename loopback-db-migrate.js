@@ -57,8 +57,10 @@ function findScriptsToRun(upOrDown, cb) {
         order: (upOrDown === 'up' ) ? 'name ASC' : 'name DESC'
     };
 
-    // get all local scripts and sort by name/date
-    var localScriptNames = fs.readdirSync(dbMigrationsFolder);
+    // get all local scripts and filter for only .js files
+    var localScriptNames = fs.readdirSync(dbMigrationsFolder).filter(function(fileName) {
+        return fileName.substring(fileName.length - 3, fileName.length) === '.js';
+    });
 
     // create table if not exists
     datasource.autoupdate('Migration', function (err) {
