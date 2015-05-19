@@ -158,9 +158,9 @@ function migrateScripts(upOrDown) {
     }
 }
 
-function stringifyAndPad(num) {
+function stringifyAndPadLeading(num) {
     var str = num + '';
-    return (str.length === 1) ? str + '0' : str;
+    return (str.length === 1) ? '0' + str : str;
 }
 
 var cmds = {
@@ -175,11 +175,11 @@ var cmds = {
 
         var d = new Date(),
             year = d.getFullYear() + '',
-            month = (d.getMonth()+1) + '',
-            day = d.getDate() + '',
-            hours = stringifyAndPad(d.getHours()),
-            minutes = stringifyAndPad(d.getMinutes()),
-            seconds = stringifyAndPad(d.getSeconds()),
+            month = stringifyAndPadLeading(d.getMonth()+1),
+            day = stringifyAndPadLeading(d.getDate()),
+            hours = stringifyAndPadLeading(d.getHours()),
+            minutes = stringifyAndPadLeading(d.getMinutes()),
+            seconds = stringifyAndPadLeading(d.getSeconds()),
             dateString = year + month + day + hours +  minutes + seconds,
             fileName = '/' + dateString + (cmdLineName && cmdLineName.indexOf('--') === -1 ? '-' + cmdLineName : '') + '.js';
 
