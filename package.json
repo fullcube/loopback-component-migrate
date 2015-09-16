@@ -1,13 +1,30 @@
 {
   "name": "loopback-db-migrate",
+  "description": "Migration framework for Loopback.",
   "version": "0.0.3",
   "author": {
     "name": "Scott Lively"
   },
+  "contributors": [
+    "Tom Kirkpatrick @mrfelton"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/slively/loopback-db-migrate.git"
   },
+  "files": [
+    "loopback-db-migrate.js",
+    "migration-skeleton.js"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "loopback",
+    "strongloop",
+    "migrate"
+  ],
+  "license": "MIT",
   "main": "./loopback-db-migrate.js",
   "bin": {
     "loopback-db-migrate": "./loopback-db-migrate.js"
@@ -16,7 +33,32 @@
     "url": "https://github.com/slively/loopback-db-migrate/issues"
   },
   "homepage": "https://github.com/slively/loopback-db-migrate",
+  "scripts": {
+    "lint": "jscs loopback-db-migrate.js && jshint loopback-db-migrate.js",
+    "test": "mocha -R spec --timeout 10000 test.js",
+    "test:watch": "npm run test -- -w",
+    "pretest": "npm run lint",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "outdated": "npm outdated --depth=0"
+  },
   "dependencies": {
-    "cli-prompt": "^0.4.1"
+    "cli-prompt": "^0.4.1",
+    "debug": "^2.2.0"
+  },
+  "peerDependencies": {
+    "loopback": ">=2.22.0"
+  },
+  "devDependencies": {
+    "bluebird": "latest",
+    "chai": "latest",
+    "jscs": "latest",
+    "jshint": "latest",
+    "loopback": ">=2.22.0",
+    "loopback-datasource-juggler": ">=2.4.0",
+    "mocha": "latest",
+    "mocha-sinon": "latest",
+    "nyc": "latest",
+    "sinon": "latest",
+    "sinon-chai": "latest"
   }
 }
