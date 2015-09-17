@@ -197,7 +197,23 @@ describe('loopback db migrate', function() {
           })
           .catch(done);
       });
+      it('should rollback a single migration that has not already run', function(done) {
+        var self = this;
+        app.models.Migration.migrate('up', '0002-somechanges')
+          .then(function() {
+            self.resetSpies();
+            return app.models.Migration.migrate('down', '0003-morechanges');
+          })
+          .then(function() {
+            expect(self.spies.m3Down).to.have.been.called;
+            expect(self.spies.m2Down).to.not.have.been.called;
+            expect(self.spies.m1Down).to.not.have.been.called;
+            self.expectNoUp();
+            done();
+          })
+          .catch(done);
+      });
     });
-
   });
+
 });
