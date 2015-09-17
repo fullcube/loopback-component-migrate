@@ -4,20 +4,6 @@ var path = require('path');
 
 var app = module.exports = loopback();
 
-var ds = app.loopback.createDataSource({
-  connector: 'memory'
-});
-
-var migrate = require(path.join(__dirname, '..', '..', '..', '..', 'lib'));
-var options = {
-  dataSource: ds, // Data source for migrate data persistence,
-  migrationsDir: path.join(__dirname, 'migrations') // Migrations directory.
-};
-migrate(
-  app, // The app instance
-  options // The options
-);
-
 app.start = function() {
   // start the web server
   return app.listen(function() {
@@ -30,6 +16,16 @@ app.start = function() {
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname, function(err) {
   if (err) throw err;
+
+  var migrate = require(path.join(__dirname, '..', '..', '..', '..', 'lib'));
+  var options = {
+    // dataSource: ds, // Data source for migrate data persistence,
+    migrationsDir: path.join(__dirname, 'migrations') // Migrations directory.
+  };
+  migrate(
+    app, // The app instance
+    options // The options
+  );
 
   // start the server if `$ node server.js`
   if (require.main === module)
