@@ -105,7 +105,7 @@ describe('loopback db migrate', function() {
         var self = this;
         app.models.Migration.migrate()
           .then(function() {
-            expect(self.spies.m1Up).to.have.been.calledBefore(self.spies.m2Up);
+            expect(self.spies.m1Up).to.have.been.called;
             expect(self.spies.m2Up).to.have.been.calledAfter(self.spies.m1Up);
             expect(self.spies.m3Up).to.have.been.calledAfter(self.spies.m2Up);
             self.expectNoDown();
@@ -167,7 +167,7 @@ describe('loopback db migrate', function() {
           .then(function() {
             self.expectNoDown();
             self.resetSpies();
-            return app.models.Migration.migrate('down', '0002-somechanges');
+            return app.models.Migration.migrate('down', '0001-initialize');
           })
           .then(function() {
             expect(self.spies.m3Down).to.have.been.called;
@@ -182,7 +182,7 @@ describe('loopback db migrate', function() {
         var self = this;
         app.models.Migration.migrate('up')
           .then(function() {
-            return app.models.Migration.migrate('down', '0002-somechanges');
+            return app.models.Migration.migrate('down', '0001-initialize');
           })
           .then(function() {
             self.resetSpies();
