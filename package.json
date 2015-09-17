@@ -13,10 +13,10 @@
     "url": "https://github.com/slively/loopback-db-migrate.git"
   },
   "files": [
-    "loopback-db-migrate.js",
     "migration-skeleton.js"
   ],
   "directories": {
+    "lib": "lib",
     "test": "test"
   },
   "keywords": [
@@ -25,24 +25,21 @@
     "migrate"
   ],
   "license": "MIT",
-  "main": "./loopback-db-migrate.js",
-  "bin": {
-    "loopback-db-migrate": "./loopback-db-migrate.js"
-  },
+  "main": "./lib/index.js",
   "bugs": {
     "url": "https://github.com/slively/loopback-db-migrate/issues"
   },
   "homepage": "https://github.com/slively/loopback-db-migrate",
   "scripts": {
-    "lint": "jscs loopback-db-migrate.js && jshint loopback-db-migrate.js",
-    "test": "mocha -R spec --timeout 10000 test.js",
+    "lint": "jscs lib && jshint lib",
+    "test": "mocha -R spec --timeout 10000 test/test.js",
     "test:watch": "npm run test -- -w",
     "pretest": "npm run lint",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "outdated": "npm outdated --depth=0"
   },
   "dependencies": {
-    "cli-prompt": "^0.4.1",
+    "cli-prompt": "^0.4.2",
     "debug": "^2.2.0"
   },
   "peerDependencies": {
@@ -53,8 +50,11 @@
     "chai": "latest",
     "jscs": "latest",
     "jshint": "latest",
+    "lodash": "latest",
     "loopback": ">=2.22.0",
+    "loopback-boot": "^2.12.2",
     "loopback-datasource-juggler": ">=2.4.0",
+    "loopback-testing": "1.2.0",
     "mocha": "latest",
     "mocha-sinon": "latest",
     "nyc": "latest",

@@ -1,0 +1,26 @@
+{
+  "name": "MigrationMap",
+  "plural": "MigrationMaps",
+  "base": "PersistedModel",
+  "properties": {
+    "type": {
+      "type": "String",
+      "comments": "Mapping type.",
+      "required": true
+    },
+    "from": {
+      "type": "String",
+      "comments": "Source Id.",
+      "required": true
+    },
+    "to": {
+      "type": "String",
+      "comments": "Target Id.",
+      "required": true
+    },
+    "data": {
+      "type": "Object",
+      "comments": "Additional data."
+    }
+  }
+}

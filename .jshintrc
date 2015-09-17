@@ -18,8 +18,9 @@
   "trailing": true,
   "sub": true,
   "maxlen": 120,
-  "predef": [],
+  "predef": ["-prompt"],
   "browser": true,
   "devel": true,
-  "node": true
+  "mocha": true,
+  "expr": true
 }

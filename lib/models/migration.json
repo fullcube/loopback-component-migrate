@@ -1,0 +1,17 @@
+{
+  "name": "Migration",
+  "plural": "Migrations",
+  "base": "PersistedModel",
+  "properties": {
+    "name": {
+      "type": "String",
+      "comments": "Name of the migration.",
+      "required": true
+    },
+    "runDtTm": {
+      "type": "Date",
+      "comments": "Date and time the migration ran.",
+      "required": true
+    }
+  }
+}
