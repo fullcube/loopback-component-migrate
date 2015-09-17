@@ -25,26 +25,26 @@ migrate(
 
 ## Running Migrations
 
-Migrations can be run by calling the static `migrate` method on the Migration model.
+Migrations can be run by calling the static `migrate` method on the Migration model. If you do not specify a callback, a promise will be returned.
 
-Run all pending migrations:
+**Run all pending migrations:**
 ```javascript
-Migrate.migrate('up')
+Migrate.migrate('up', function(err) {});
 ```
 
-Run all pending migrations upto and including 0002-somechanges:
+**Run all pending migrations upto and including 0002-somechanges:**
 ```javascript
-Migrate.migrate('up', '0002-somechanges')
+Migrate.migrate('up', '0002-somechanges', function(err) {});
 ```
 
-Rollback all migrations:
+**Rollback all migrations:**
 ```javascript
-Migrate.migrate('down')
+Migrate.migrate('down', function(err) {});
 ```
 
-Rollback migrations upto and including 0002-somechanges:
+**Rollback migrations upto and including 0002-somechanges:**
 ```javascript
-Migrate.migrate('down', '0002-somechanges')
+Migrate.migrate('down', '0002-somechanges', function(err) {});
 ```
 
 ## Example migrations
@@ -54,7 +54,7 @@ module.exports = {
     app.models.Users.create({ ... }, next);
   },
   down: function(app, next) {
-    app.models.Users.destroy({ ... }, next);
+    app.models.Users.destroyAll({ ... }, next);
   }
 };
 ```
@@ -63,7 +63,7 @@ module.exports = {
 /* executing raw sql */
 module.exports = {
   up: function(app, next) {
-    app.dataSources.mysql.('CREATE TABLE `my_table` ...;', next);
+    app.dataSources.mysql.connector.query('CREATE TABLE `my_table` ...;', next);
   },
   down: function(app, next) {
    app.dataSources.mysql.connector.query('DROP TABLE `my_table`;', next);
