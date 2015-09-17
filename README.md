@@ -1,4 +1,7 @@
 A library to add simple database migration support to loopback projects.
+
+[![Dependencies](http://img.shields.io/david/fullcube/loopback-db-migrate.svg?style=flat)](https://david-dm.org/fullcube/loopback-db-migrate)  [![Circle CI](https://circleci.com/gh/fullcube/loopback-db-migrate.svg?style=svg)](https://circleci.com/gh/fullcube/loopback-db-migrate)
+
 Migrations that have been run will be stored in a table called 'Migrations'.
 The library will read the loopback datasources.json files based on the NODE_ENV environment variable just like loopback does.
 The usage is based on the node-db-migrate project.
