@@ -13,5 +13,10 @@
       "comments": "Date and time the migration ran.",
       "required": true
     }
+  },
+  "indexes": {
+    "name_index": {
+      "name": 1
+    }
   }
 }

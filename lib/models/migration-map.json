@@ -22,5 +22,13 @@
       "type": "Object",
       "comments": "Additional data."
     }
+  },
+  "indexes": {
+    "type_from_index": {
+      "keys": {
+        "type": 1,
+        "from": 1
+      }
+    }
   }
 }
