@@ -13,7 +13,9 @@
     "url": "https://github.com/slively/loopback-db-migrate.git"
   },
   "files": [
-    "migration-skeleton.js"
+    "migration-skeleton.js",
+    "lib",
+    "test"
   ],
   "directories": {
     "lib": "lib",
