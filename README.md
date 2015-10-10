@@ -15,7 +15,8 @@ To initialize, add the following in server.js or a boot script:
 var migrate = require('loopback-db-migrate');
 var options = {
   dataSource: ds, // Data source for migrate data persistence (defaults to 'db'),
-  migrationsDir: path.join(__dirname, 'migrations') // Migrations directory.
+  migrationsDir: path.join(__dirname, 'migrations'), // Migrations directory.
+  enableRest: true // Expose migrate and rollback methods via REST api.
 };
 migrate(
   app, // The app instance

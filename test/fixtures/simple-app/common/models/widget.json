@@ -14,5 +14,8 @@
       "type": "string",
       "required": false
     }
-  }
+  },
+  "validations": [],
+  "relations": {},
+  "methods": {}
 }

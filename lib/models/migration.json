@@ -1,7 +1,7 @@
 {
   "name": "Migration",
   "plural": "Migrations",
-  "base": "PersistedModel",
+  "base": "Model",
   "properties": {
     "name": {
       "type": "String",
@@ -17,6 +17,35 @@
   "indexes": {
     "name_index": {
       "name": 1
+    }
+  },
+  "methods": {
+    "migrateTo": {
+      "description": "Run all pending migrations",
+      "isStatic": true,
+      "http": {
+        "path": "/migrate",
+        "verb": "get"
+      },
+      "accepts": [{
+        "arg": "to",
+        "type": "String",
+        "description": "Name of the migration script to migrate to. If no name is provided all pending migrations will run."
+      }]
+    },
+    "rollbackTo": {
+      "description": "Rollback migrations",
+      "isStatic": true,
+      "http": {
+        "path": "/rollback",
+        "verb": "get"
+      },
+      "accepts": [{
+        "arg": "to",
+        "type": "String",
+        "required": true,
+        "description": "Name of the migration script to rollback to."
+      }]
     }
   }
 }
