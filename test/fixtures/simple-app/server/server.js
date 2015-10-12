@@ -7,8 +7,6 @@ var app = module.exports = loopback();
 
 app.use('/api', loopback.rest());
 
-
-
 app.start = function() {
   // start the web server
   return app.listen(function() {

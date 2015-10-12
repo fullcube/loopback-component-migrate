@@ -12,26 +12,30 @@
     "type": "git",
     "url": "https://github.com/slively/loopback-db-migrate.git"
   },
-  "files": [
-    "migration-skeleton.js",
-    "lib",
-    "test"
-  ],
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
   "keywords": [
     "loopback",
     "strongloop",
     "migrate"
   ],
   "license": "MIT",
-  "main": "./lib/index.js",
   "bugs": {
     "url": "https://github.com/slively/loopback-db-migrate/issues"
   },
   "homepage": "https://github.com/slively/loopback-db-migrate",
+  "files": [
+    "migration-skeleton.js",
+    "lib",
+    "bin",
+    "test"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "main": "./lib/index.js",
+  "bin": {
+    "loopback-db-migrate": "./bin/cli"
+  },
   "scripts": {
     "lint": "jscs lib && jshint lib",
     "test": "mocha -R spec --timeout 10000 test/test.js",
@@ -42,7 +46,9 @@
   },
   "dependencies": {
     "cli-prompt": "^0.4.2",
-    "debug": "^2.2.0"
+    "commander": "^2.8.1",
+    "debug": "^2.2.0",
+    "mkdirp": "^0.5.1"
   },
   "peerDependencies": {
     "loopback": ">=2.22.0"
