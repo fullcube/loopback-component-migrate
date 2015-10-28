@@ -1,7 +1,7 @@
 {
-  "name": "loopback-db-migrate",
+  "name": "loopback-component-migrate",
   "description": "Migration framework for Loopback.",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "author": {
     "name": "Scott Lively"
   },
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/slively/loopback-db-migrate.git"
+    "url": "https://github.com/fullcube/loopback-component-migrate.git"
   },
   "keywords": [
     "loopback",
@@ -19,9 +19,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/slively/loopback-db-migrate/issues"
+    "url": "https://github.com/fullcube/loopback-component-migrate/issues"
   },
-  "homepage": "https://github.com/slively/loopback-db-migrate",
+  "homepage": "https://github.com/fullcube/loopback-component-migrate",
   "files": [
     "migration-skeleton.js",
     "lib",
@@ -34,7 +34,7 @@
   },
   "main": "./lib/index.js",
   "bin": {
-    "loopback-db-migrate": "./bin/cli"
+    "loopback-component-migrate": "./bin/cli"
   },
   "scripts": {
     "lint": "jscs lib && jshint lib",

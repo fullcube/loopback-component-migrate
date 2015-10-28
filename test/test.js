@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('loopback-db-migrate');
+var debug = require('debug')('loopback-component-migrate');
 var _ = require('lodash');
 
 var loopback = require('loopback');

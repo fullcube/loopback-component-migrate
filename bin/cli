@@ -2,15 +2,15 @@
 var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
-var debug = require('debug')('loopback-db-migrate');
+var debug = require('debug')('loopback-component-migrate');
 
 
 /**
- * Command line implementation for loopback-db-migrate.
+ * Command line implementation for loopback-component-migrate.
  *
  * Common usage case is:
  *
- * ./node_modules/.bin/loopback-db-migrate create|up|down
+ * ./node_modules/.bin/loopback-component-migrate create|up|down
  */
 var program = require('commander');
 
