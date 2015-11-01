@@ -3,10 +3,11 @@
   "description": "Migration framework for Loopback.",
   "version": "0.1.0",
   "author": {
-    "name": "Scott Lively"
+    "name": "Tom Kirkpatrick @mrfelton"
   },
   "contributors": [
-    "Tom Kirkpatrick @mrfelton"
+    "Scott Lively @slively",
+    "Ivan Tugay @listepo"
   ],
   "repository": {
     "type": "git",
