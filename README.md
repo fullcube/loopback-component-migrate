@@ -42,6 +42,10 @@ The usage is based on the node-db-migrate project.
 
   [Boolean] : Datasource to connect the Migration and MigrationMap models to. *(default: db)*
 
+- `acls`
+
+  [Array] : ACLs to apply to Migration and MigrationMap models. *(default: [])*
+
 
 ## Running Migrations
 
