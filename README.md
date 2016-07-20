@@ -6,23 +6,42 @@ Migrations that have been run will be stored in a table called 'Migrations'.
 The library will read the loopback datasources.json files based on the NODE_ENV environment variable just like loopback does.
 The usage is based on the node-db-migrate project.
 
+## Installation
 
-## Configuration
+1. Install in you loopback project:
 
-To initialize, add the following in server.js or a boot script:
+  `npm install --save loopback-component-migrate`
 
-```javascript
-var migrate = require('loopback-component-migrate');
-var options = {
-  dataSource: ds, // Data source for migrate data persistence (defaults to 'db'),
-  migrationsDir: path.join(__dirname, 'migrations'), // Migrations directory.
-  enableRest: true // Expose migrate and rollback methods via REST api.
-};
-migrate(
-  app, // The app instance
-  options // The options
-);
-```
+2. Create a component-config.json file in your server folder (if you don't already have one)
+
+3. Enable the component inside `component-config.json`.
+
+  ```json
+  {
+    "loopback-component-migrate": {
+      "key": "value"
+    }
+  }
+  ```
+
+**Options:**
+
+- `log`
+
+  [String] : Name of the logging class to use for log messages. *(default: 'console')*
+
+- `enableRest`
+
+  [Boolean] : A boolean indicating wether migrate/rollback REST api methods should be exposed on the Migration model. *(default: false)*
+
+- `migrationsDir`
+
+  [Boolean] : Directory containing migration scripts. *(default: server/migrations)*
+
+- `dataSource`
+
+  [Boolean] : Datasource to connect the Migration and MigrationMap models to. *(default: db)*
+
 
 ## Running Migrations
 
