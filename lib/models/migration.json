@@ -1,7 +1,8 @@
 {
   "name": "Migration",
   "plural": "Migrations",
-  "base": "Model",
+  "base": "PersistedModel",
+  "description": "View and run pending migrations.",
   "properties": {
     "name": {
       "type": "String",

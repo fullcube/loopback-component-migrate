@@ -1,7 +1,8 @@
 {
   "name": "MigrationMap",
   "plural": "MigrationMaps",
-  "base": "Model",
+  "base": "PersistedModel",
+  "description": "Migration Mappings.",
   "properties": {
     "type": {
       "type": "String",
