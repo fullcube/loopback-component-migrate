@@ -36,11 +36,11 @@ The usage is based on the node-db-migrate project.
 
 - `migrationsDir`
 
-  [Boolean] : Directory containing migration scripts. *(default: server/migrations)*
+  [String] : Directory containing migration scripts. *(default: server/migrations)*
 
 - `dataSource`
 
-  [Boolean] : Datasource to connect the Migration and MigrationMap models to. *(default: db)*
+  [String] : Datasource to connect the Migration and MigrationMap models to. *(default: db)*
 
 - `acls`
 
