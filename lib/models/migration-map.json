@@ -29,7 +29,9 @@
       "keys": {
         "type": 1,
         "from": 1
-      }
+      },
+      "columns": "`type`, `from`",
+      "kind": "UNIQUE"
     }
   }
 }
