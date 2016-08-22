@@ -15,92 +15,112 @@ var debug = require('debug')('loopback-component-migrate');
 var program = require('commander');
 
 program
-  .version(require(path.join(__dirname, '..', './package.json')).version)
-  .option('-d, --migrations-dir <path>', 'set migrations directory. defaults to ./migrations')
-  .option('-s, --server <path>', 'set server path. defaults to ./server/server.js');
+    .version(require(path.join(__dirname, '..', './package.json')).version)
+    .option('-d, --migrations-dir <path>', 'set migrations directory. defaults to ./server/migrations')
+    .option('-s, --server <path>', 'set server path. defaults to ./server/server.js');
 
 program
-  .command('create [name]')
-  .description('create a new migration script')
-  .action(function(name, options){
+    .command('create [name]')
+    .description('create a new migration script')
+    .action(function(name, options){
 
-    function stringifyAndPadLeading(num) {
-        var str = num + '';
-        return (str.length === 1) ? '0' + str : str;
-    }
+        function stringifyAndPadLeading(num) {
+            var str = num + '';
+            return (str.length === 1) ? '0' + str : str;
+        }
 
-    function generateFileName(name) {
-      var d = new Date(),
-          year = d.getFullYear() + '',
-          month = stringifyAndPadLeading(d.getMonth()+1),
-          day = stringifyAndPadLeading(d.getDate()),
-          hours = stringifyAndPadLeading(d.getHours()),
-          minutes = stringifyAndPadLeading(d.getMinutes()),
-          seconds = stringifyAndPadLeading(d.getSeconds()),
-          dateString = year + month + day + hours +  minutes + seconds,
-          fileName = dateString + (name ? '-' + name : '') + '.js';
-      return fileName;
-    }
+        function generateFileName(name) {
+            var d = new Date(),
+                year = d.getFullYear() + '',
+                month = stringifyAndPadLeading(d.getMonth()+1),
+                day = stringifyAndPadLeading(d.getDate()),
+                hours = stringifyAndPadLeading(d.getHours()),
+                minutes = stringifyAndPadLeading(d.getMinutes()),
+                seconds = stringifyAndPadLeading(d.getSeconds()),
+                dateString = year + month + day + hours +  minutes + seconds,
+                fileName = dateString + (name ? '-' + name : '') + '.js';
+            return fileName;
+        }
 
-    function getMigrationsDir () {
-      var dir = path.join(process.cwd(), 'migrations');
-      debug('Using migrations directory: %s', dir);
-      return dir;
-    }
+        function getMigrationsDir () {
+            var dir = path.join(process.cwd(), 'server/migrations');
+            debug('Using migrations directory: %s', dir);
+            return dir;
+        }
 
-    function ensureDirectory (dir) {
-      debug('Preparing migrations directory: %s', dir);
-      mkdirp.sync(dir);
-    }
+        function ensureDirectory (dir) {
+            debug('Preparing migrations directory: %s', dir);
+            mkdirp.sync(dir);
+        }
 
-    function writeFile (fileName, contents) {
-      debug('Creating migration script: %s', fileName);
-      var migrationsDir = getMigrationsDir();
-      ensureDirectory(migrationsDir);
-      var filePath = path.join(migrationsDir, fileName);
-      fs.writeFileSync(filePath, contents);
-    }
+        function writeFile (fileName, contents) {
+            debug('Creating migration script: %s', fileName);
+            var migrationsDir = getMigrationsDir();
+            ensureDirectory(migrationsDir);
+            var filePath = path.join(migrationsDir, fileName);
+            fs.writeFileSync(filePath, contents);
+        }
 
-    // Create the migration file.
-    var fileName = generateFileName(name);
-    var migrationsDir = path.join(process.cwd(), 'migrations');
-    console.log('Creating migration script %s in %s', fileName, migrationsDir);
+        // Create the migration file.
+        var fileName = generateFileName(name);
+        var migrationsDir = getMigrationsDir();
+        console.log('Creating migration script %s in %s', fileName, migrationsDir);
 
-    var filePath = path.join(migrationsDir,fileName);
-    var fileContent = fs.readFileSync(path.join(__dirname, '..', 'migration-skeleton.js'));
-    writeFile(fileName, fileContent);
-  });
+        var fileContent = fs.readFileSync(path.join(__dirname, 'migration-skeleton.js'));
+        writeFile(fileName, fileContent);
+    });
 
 program
-  .command('migrate <to>')
-  .alias('up')
-  .description('Migrate to the given migration')
-  .action(function(to, options){
-    console.log('Migrating up to: "%s" [TODO]', to);
-    var server = program.server || process.cwd() + '/server/server.js';
-    var app = require(path.resolve(process.cwd(), server));
-  }).on('--help', function() {
+    .command('up [to]')
+    .description('Run all pending migrations')
+    .action(function(to, options){
+        console.log('Migrating up...');
+        var server = program.server || process.cwd() + '/server/server.js';
+        var app = require(path.resolve(server));
+        app.on('booted', function() {
+            app.models['Migration'].on('complete', function() {
+                console.log('Migrations done');
+                process.exit(0);
+            });
+            app.models['Migration'].migrate('up', to, function(err) {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+            });
+        });
+    }).on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log('    $ migrate 005');
-    console.log('    $ up 005');
+    console.log('    $ migrate up');
+    console.log('    $ migrate up 023');
     console.log();
-  });
+});
 
 program
-  .command('rollback <to>')
-  .alias('down')
-  .description('Rollback to the given migration')
-  .action(function(to, options){
-    console.log('Rolling back to: "%s" [TODO]', to);
-    var server = program.server || process.cwd() + '/server/server.js';
-    var app = require(path.resolve(process.cwd(), server));
-  }).on('--help', function() {
+    .command('down <to>')
+    .description('Rollback to the given migration')
+    .action(function(to, options){
+        console.log('Rolling back to: "%s"', to);
+        var server = program.server || process.cwd() + '/server/server.js';
+        var app = require(path.resolve(server));
+        app.on('booted', function() {
+            app.models['Migration'].on('complete', function() {
+                console.log('Rollback done');
+                process.exit(0);
+            });
+            app.models['Migration'].migrate('down', to, function(err) {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+            });
+        });
+    }).on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log('    $ rollback 001');
-    console.log('    $ down 001');
+    console.log('    $ migrate down 001');
     console.log();
-  });
+});
 
 program.parse(process.argv);
