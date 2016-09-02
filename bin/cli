@@ -66,7 +66,7 @@ program
         var migrationsDir = getMigrationsDir();
         console.log('Creating migration script %s in %s', fileName, migrationsDir);
 
-        var fileContent = fs.readFileSync(path.join(__dirname, 'migration-skeleton.js'));
+        var fileContent = fs.readFileSync(path.resolve(path.join(__dirname, '../', 'migration-skeleton.js')));
         writeFile(fileName, fileContent);
     });
 
@@ -78,9 +78,15 @@ program
         var server = program.server || process.cwd() + '/server/server.js';
         var app = require(path.resolve(server));
         app.on('booted', function() {
-            app.models['Migration'].on('complete', function() {
-                console.log('Migrations done');
-                process.exit(0);
+            app.models['Migration'].on('complete', function(err) {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+                else {
+                    console.log('Migrations done');
+                    process.exit(0);
+                }
             });
             app.models['Migration'].migrate('up', to, function(err) {
                 if (err) {
@@ -105,9 +111,15 @@ program
         var server = program.server || process.cwd() + '/server/server.js';
         var app = require(path.resolve(server));
         app.on('booted', function() {
-            app.models['Migration'].on('complete', function() {
-                console.log('Rollback done');
-                process.exit(0);
+            app.models['Migration'].on('complete', function(err) {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+                else {
+                    console.log('Rollback done');
+                    process.exit(0);
+                }
             });
             app.models['Migration'].migrate('down', to, function(err) {
                 if (err) {
