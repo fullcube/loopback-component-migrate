@@ -9,7 +9,7 @@
       "comments": "Mapping type.",
       "required": true
     },
-    "from": {
+    "from_": {
       "type": "String",
       "comments": "Source Id.",
       "required": true
@@ -28,9 +28,9 @@
     "type_from_index": {
       "keys": {
         "type": 1,
-        "from": 1
+        "from_": 1
       },
-      "columns": "`type`, `from`",
+      "columns": "`type`, `from_`",
       "kind": "UNIQUE"
     }
   }
