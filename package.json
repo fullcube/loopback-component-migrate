@@ -1,6 +1,6 @@
 {
   "name": "loopback-component-migrate",
-  "version": "0.0.0-semantically-released.0",
+  "version": "0.0.0",
   "description": "Migration framework for Loopback.",
   "author": {
     "name": "Tom Kirkpatrick @mrfelton"
