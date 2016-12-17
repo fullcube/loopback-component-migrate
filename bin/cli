@@ -17,7 +17,8 @@ var program = require('commander');
 program
   .version(require(path.join(__dirname, '..', './package.json')).version)
   .option('-d, --migrations-dir <path>', 'set migrations directory. defaults to ./migrations')
-  .option('-s, --server <path>', 'set server path. defaults to ./server/server.js');
+  .option('-s, --server <path>', 'set server path. defaults to ./server/server.js')
+  .option('-t, --to <filename>', 'define a target file for migration and rollback');
 
 program
   .command('create [name]')
@@ -72,34 +73,48 @@ program
   });
 
 program
-  .command('migrate <to>')
-  .alias('up')
+  .command('migrate')
   .description('Migrate to the given migration')
-  .action(function(to, options){
-    console.log('Migrating up to: "%s" [TODO]', to);
+  .action(function(options){
+
+    // Get app module
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
+
+    // Migrate Up
+    app.models.Migration.migrate('up', program.to || null , function(err){
+      process.exit();
+    });
+
   }).on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log('    $ migrate 005');
-    console.log('    $ up 005');
+    console.log('    $ migrate');
+    console.log('    $ migrate -t 005');
+    console.log('    $ migrate --to 005');
     console.log();
   });
 
 program
-  .command('rollback <to>')
-  .alias('down')
+  .command('rollback')
   .description('Rollback to the given migration')
-  .action(function(to, options){
-    console.log('Rolling back to: "%s" [TODO]', to);
+  .action(function(options){
+
+    // Get app modulecon
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
+
+    // Rollback
+    app.models.Migration.migrate('down', program.to || null , function(err){
+      process.exit();
+    });
+
   }).on('--help', function() {
     console.log('  Examples:');
     console.log();
-    console.log('    $ rollback 001');
-    console.log('    $ down 001');
+    console.log('    $ rollback');
+    console.log('    $ rollback -t 001');
+    console.log('    $ rollback --to 001');
     console.log();
   });
 
