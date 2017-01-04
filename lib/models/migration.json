@@ -34,6 +34,25 @@
         "description": "Name of the migration script to migrate to. If no name is provided all pending migrations will run."
       }]
     },
+    "migrateByName": {
+      "description": "Run specific migration by name",
+      "isStatic": true,
+      "http": {
+        "path": "/migrateByName",
+        "verb": "get"
+      },
+      "accepts": [{
+        "arg": "name",
+        "type": "String",
+        "required": true,
+        "description": "Name of the migration script to run."
+      },
+      {
+        "arg" : "record",
+        "type" : "boolean",
+        "required" : false
+      }]
+    },
     "rollbackTo": {
       "description": "Rollback migrations",
       "isStatic": true,
