@@ -23,7 +23,6 @@
   "methods": {
     "migrateTo": {
       "description": "Run all pending migrations",
-      "isStatic": true,
       "http": {
         "path": "/migrate",
         "verb": "get"
@@ -36,7 +35,6 @@
     },
     "migrateByName": {
       "description": "Run specific migration by name",
-      "isStatic": true,
       "http": {
         "path": "/migrateByName",
         "verb": "get"
@@ -55,7 +53,6 @@
     },
     "rollbackTo": {
       "description": "Rollback migrations",
-      "isStatic": true,
       "http": {
         "path": "/rollback",
         "verb": "get"
