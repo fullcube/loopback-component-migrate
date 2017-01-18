@@ -4,7 +4,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var debug = require('debug')('loopback-component-migrate');
 
-
+require('babel-register');
 /**
  * Command line implementation for loopback-component-migrate.
  *

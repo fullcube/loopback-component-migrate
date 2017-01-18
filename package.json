@@ -45,9 +45,10 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "outdated": "npm outdated --depth=0",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "precommit-script":"npm run lint"
+    "precommit-script": "npm run lint"
   },
   "dependencies": {
+    "babel-register": "^6.18.0",
     "cli-prompt": "^0.4.2",
     "commander": "^2.8.1",
     "debug": "^2.2.0",
