@@ -44,9 +44,11 @@
     "pretest": "npm run lint",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "outdated": "npm outdated --depth=0",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "precommit-script": "npm run lint"
   },
   "dependencies": {
+    "babel-register": "^6.18.0",
     "cli-prompt": "^0.4.2",
     "commander": "^2.8.1",
     "debug": "^2.2.0",
@@ -78,7 +80,7 @@
   "config": {
     "ghooks": {
       "commit-msg": "validate-commit-msg",
-      "pre-commit": "npm run lint"
+      "pre-commit": "./pre-commit.sh"
     }
   },
   "release": {
