@@ -85,6 +85,20 @@ describe('loopback db migrate', function() {
       .catch(done);
     });
 
+    describe('migrateByName', function() {
+      it('should set a property on app to indicate that migration is running', function(done) {
+        var self = this;
+        expect(app.migrating).to.be.undefined;
+        var promise = app.models.Migration.migrateByName('0002-somechanges.js');
+        expect(app.migrating).to.be.true;
+        promise.then(function() {
+          expect(app.migrating).to.be.undefined;
+          done();
+        })
+        .catch(done);
+      });
+    });
+
     describe('migrate', function() {
       it('should set a property on app to indicate that migrations are running', function(done) {
         var self = this;
