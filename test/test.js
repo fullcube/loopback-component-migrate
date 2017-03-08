@@ -74,15 +74,17 @@ describe('loopback db migrate', function() {
     });
 
     // Delete all data after each test.
-    beforeEach(function(done) {
-      Promise.all([
+    beforeEach(function() {
+      return Promise.all([
         app.models.Migration.destroyAll(),
         app.models.Migration.destroyAll()
       ])
       .then(function() {
-        done();
+        return app.models.Migration.create({
+          name: '0000-error.js',
+          runDtTm: new Date()
+        })
       })
-      .catch(done);
     });
 
     describe('migrateByName', function() {
@@ -97,50 +99,51 @@ describe('loopback db migrate', function() {
         })
         .catch(done);
       });
-    });
 
+      it('should log errors', function() {
+        return app.models.Migration.migrateByName('0000-error.js')
+          .catch(function(err) {
+            expect(err).to.not.be.undefined;
+          })
+      });
+
+    });
     describe('migrate', function() {
-      it('should set a property on app to indicate that migrations are running', function(done) {
+      it('should set a property on app to indicate that migrations are running', function() {
         var self = this;
         expect(app.migrating).to.be.undefined;
         var promise = app.models.Migration.migrate();
         expect(app.migrating).to.be.true;
-        promise.then(function() {
+        return promise.then(function() {
           expect(app.migrating).to.be.undefined;
-          done();
         })
-        .catch(done);
       });
     });
 
     describe('up', function() {
-      it('should run all migration scripts', function(done) {
+      it('should run all migration scripts', function() {
         var self = this;
-        app.models.Migration.migrate()
+        return app.models.Migration.migrate()
           .then(function() {
             expect(self.spies.m1Up).to.have.been.called;
             expect(self.spies.m2Up).to.have.been.calledAfter(self.spies.m1Up);
             expect(self.spies.m3Up).to.have.been.calledAfter(self.spies.m2Up);
             self.expectNoDown();
-            done();
           })
-          .catch(done);
       });
-      it('should run migrations up to the specificed point only', function(done) {
+      it('should run migrations up to the specificed point only', function() {
         var self = this;
-        app.models.Migration.migrate('up', '0002-somechanges')
+        return app.models.Migration.migrate('up', '0002-somechanges')
           .then(function() {
             expect(self.spies.m1Up).to.have.been.calledBefore(self.spies.m2Up);
             expect(self.spies.m2Up).to.have.been.calledAfter(self.spies.m1Up);
             expect(self.spies.m3Up).not.to.have.been.called;
             self.expectNoDown();
-            done();
           })
-          .catch(done);
       });
-      it('should not rerun migrations that hae already been run', function(done) {
+      it('should not rerun migrations that hae already been run', function() {
         var self = this;
-        app.models.Migration.migrate('up', '0002-somechanges')
+        return app.models.Migration.migrate('up', '0002-somechanges')
           .then(function() {
             self.resetSpies();
             return app.models.Migration.migrate('up');
@@ -150,16 +153,14 @@ describe('loopback db migrate', function() {
             expect(self.spies.m2Up).not.to.have.been.called;
             expect(self.spies.m3Up).to.have.been.called;
             self.expectNoDown();
-            done();
           })
-          .catch(done);
       });
     });
 
     describe('down', function() {
-      it('should run all rollback scripts in reverse order', function(done) {
+      it('should run all rollback scripts in reverse order', function() {
         var self = this;
-        app.models.Migration.migrate('up')
+        return app.models.Migration.migrate('up')
           .then(function() {
             self.expectNoDown();
             self.resetSpies();
@@ -170,13 +171,11 @@ describe('loopback db migrate', function() {
             expect(self.spies.m2Down).to.have.been.calledAfter(self.spies.m3Down);
             expect(self.spies.m1Down).to.have.been.calledAfter(self.spies.m2Down);
             self.expectNoUp();
-            done();
           })
-          .catch(done);
       });
-      it('should run rollbacks up to the specificed point only', function(done) {
+      it('should run rollbacks up to the specificed point only', function() {
         var self = this;
-        app.models.Migration.migrate('up')
+        return app.models.Migration.migrate('up')
           .then(function() {
             self.expectNoDown();
             self.resetSpies();
@@ -187,13 +186,11 @@ describe('loopback db migrate', function() {
             expect(self.spies.m2Down).to.have.been.calledAfter(self.spies.m3Down);
             expect(self.spies.m1Down).not.to.have.been.called;
             self.expectNoUp();
-            done();
           })
-          .catch(done);
       });
-      it('should not rerun rollbacks that hae already been run', function(done) {
+      it('should not rerun rollbacks that hae already been run', function() {
         var self = this;
-        app.models.Migration.migrate('up')
+        return app.models.Migration.migrate('up')
           .then(function() {
             return app.models.Migration.migrate('down', '0001-initialize');
           })
@@ -206,13 +203,11 @@ describe('loopback db migrate', function() {
             expect(self.spies.m2Down).to.not.have.been.called;
             expect(self.spies.m1Down).to.have.been.called;
             self.expectNoUp();
-            done();
           })
-          .catch(done);
       });
-      it('should rollback a single migration that has not already run', function(done) {
+      it('should rollback a single migration that has not already run', function() {
         var self = this;
-        app.models.Migration.migrate('up', '0002-somechanges')
+        return app.models.Migration.migrate('up', '0002-somechanges')
           .then(function() {
             self.resetSpies();
             return app.models.Migration.migrate('down', '0003-morechanges');
@@ -222,9 +217,7 @@ describe('loopback db migrate', function() {
             expect(self.spies.m2Down).to.not.have.been.called;
             expect(self.spies.m1Down).to.not.have.been.called;
             self.expectNoUp();
-            done();
           })
-          .catch(done);
       });
     });
   });

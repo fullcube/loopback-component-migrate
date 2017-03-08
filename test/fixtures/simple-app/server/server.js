@@ -21,17 +21,6 @@ app.start = function() {
 boot(app, __dirname, function(err) {
   if (err) throw err;
 
-  var migrate = require(path.join(__dirname, '..', '..', '..', '..', 'lib'));
-  var options = {
-    // dataSource: ds, // Data source for migrate data persistence,
-    migrationsDir: path.join(__dirname, 'migrations'), // Migrations directory.
-    enableRest: true
-  };
-  migrate(
-    app, // The app instance
-    options // The options
-  );
-
   // Register explorer using component-centric API:
   explorer(app, { basePath: '/api', mountPath: '/explorer' });
 

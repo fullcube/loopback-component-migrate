@@ -1,0 +1,6 @@
+{
+  "../../../../lib": {
+    "enableRest": false,
+    "migrationsDir": "./test/fixtures/simple-app/server/migrations"
+  }
+}

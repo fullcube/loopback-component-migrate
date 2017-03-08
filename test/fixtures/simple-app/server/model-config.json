@@ -2,9 +2,6 @@
   "_meta": {
     "sources": [
       "../common/models"
-    ],
-    "mixins": [
-      "../../../../"
     ]
   },
   "User": {

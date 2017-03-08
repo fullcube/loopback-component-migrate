@@ -56,7 +56,7 @@
     "loopback": ">=2.22.0"
   },
   "devDependencies": {
-    "bluebird": "latest",
+    "bluebird": "^3.5.0",
     "chai": "latest",
     "condition-circle": "^1.5.0",
     "ghooks": "^1.3.2",
