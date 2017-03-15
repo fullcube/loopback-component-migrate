@@ -26,9 +26,6 @@ describe('loopback db migrate', function() {
       expect(app.models.Migration).to.exist;
       expect(app.models.Migration).itself.to.respondTo('migrate');
     });
-    it('should attach a MigrationMap model to the app', function() {
-      expect(app.models.Migration).to.exist;
-    });
     it('should provide a Migration.migrate() method', function() {
       expect(app.models.Migration).itself.to.respondTo('migrate');
     });
