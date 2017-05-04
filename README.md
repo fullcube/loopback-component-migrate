@@ -8,6 +8,8 @@ The usage is based on the node-db-migrate project.
 
 ## Installation
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fullcube/loopback-component-migrate.svg)](https://greenkeeper.io/)
+
 1. Install in you loopback project:
 
   `npm install --save loopback-component-migrate`
