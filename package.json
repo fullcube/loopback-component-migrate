@@ -66,7 +66,7 @@
     "loopback-testing": "^1.4.0",
     "mocha": "latest",
     "nyc": "latest",
-    "semantic-release": "^6.3.6",
+    "semantic-release": "^8.0.1",
     "sinon": "latest",
     "sinon-chai": "latest",
     "validate-commit-msg": "^2.12.2"
