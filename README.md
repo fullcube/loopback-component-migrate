@@ -55,22 +55,22 @@ Migrations can be run by calling the static `migrate` method on the Migration mo
 
 **Run all pending migrations:**
 ```javascript
-Migrate.migrate('up', function(err) {});
+Migration.migrate('up', function(err) {});
 ```
 
 **Run all pending migrations upto and including 0002-somechanges:**
 ```javascript
-Migrate.migrate('up', '0002-somechanges', function(err) {});
+Migration.migrate('up', '0002-somechanges', function(err) {});
 ```
 
 **Rollback all migrations:**
 ```javascript
-Migrate.migrate('down', function(err) {});
+Migration.migrate('down', function(err) {});
 ```
 
 **Rollback migrations upto and including 0002-somechanges:**
 ```javascript
-Migrate.migrate('down', '0002-somechanges', function(err) {});
+Migration.migrate('down', '0002-somechanges', function(err) {});
 ```
 
 ## Example migrations
