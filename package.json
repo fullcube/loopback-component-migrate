@@ -62,7 +62,7 @@
     "lodash": "latest",
     "loopback": "^3.8.0",
     "loopback-boot": "^2.24.1",
-    "loopback-component-explorer": "^4.2.0",
+    "loopback-component-explorer": "^5.2.0",
     "loopback-testing": "^1.4.0",
     "mocha": "latest",
     "nyc": "latest",
