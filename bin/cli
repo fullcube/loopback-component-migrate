@@ -76,9 +76,19 @@ program
   .alias('up')
   .description('Migrate to the given migration')
   .action(function(to, options){
-    console.log('Migrating up to: "%s" [TODO]', to);
+    console.log('Migrating up to: "%s"', to);
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
+    app.models.Migration.migrate('up', to)
+    .then(function (res) {
+      console.log('Done.');
+    })
+    .catch(function (err) {
+      console.log(err);
+    })
+    .finally(function () {
+      process.exit();
+    });
   }).on('--help', function() {
     console.log('  Examples:');
     console.log();
@@ -92,9 +102,19 @@ program
   .alias('down')
   .description('Rollback to the given migration')
   .action(function(to, options){
-    console.log('Rolling back to: "%s" [TODO]', to);
+    console.log('Rolling back to: "%s"', to);
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
+    app.models.Migration.migrate('down', to)
+    .then(function (res) {
+      console.log('Done.');
+    })
+    .catch(function (err) {
+      console.log(err);
+    })
+    .finally(function () {
+      process.exit();
+    });
   }).on('--help', function() {
     console.log('  Examples:');
     console.log();
