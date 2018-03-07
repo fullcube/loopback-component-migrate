@@ -34,7 +34,7 @@ The usage is based on the node-db-migrate project.
 
 - `enableRest`
 
-  [Boolean] : A boolean indicating wether migrate/rollback REST api methods should be exposed on the Migration model. *(default: false)*
+  [Boolean] : A boolean indicating whether migrate/rollback REST api methods should be exposed on the Migration model. *(default: false)*
 
 - `migrationsDir`
 
@@ -47,6 +47,10 @@ The usage is based on the node-db-migrate project.
 - `acls`
 
   [Array] : ACLs to apply to Migration and MigrationMap models. *(default: [])*
+
+- `public`
+
+  [Boolean] : A boolean indicating whether Migration model should be exposed on the StrongLoop API Explorer. *(default: true)*
 
 
 ## Running Migrations
