@@ -43,7 +43,7 @@ program
     }
 
     function getMigrationsDir () {
-      var dir = path.join(process.cwd(), 'migrations');
+      var dir = path.join(process.cwd(), program.migrationDir || 'migrations');
       debug('Using migrations directory: %s', dir);
       return dir;
     }
