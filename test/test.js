@@ -50,8 +50,8 @@ describe('loopback db migrate', function() {
       };
 
       this.resetSpies = function() {
-        _.forEach(this.spies, function(spy) {
-          spy.reset();
+        _.forEach(this.spies, function(spy, key) {
+          spy.resetHistory();
         });
       };
 
