@@ -56,7 +56,7 @@
     "bluebird": "^3.5.0",
     "chai": "latest",
     "condition-circle": "^1.5.0",
-    "ghooks": "^2.0.0",
+    "ghooks": "2.0.3",
     "jscs": "latest",
     "jshint": "latest",
     "lodash": "latest",
