@@ -17,7 +17,9 @@
   },
   "indexes": {
     "name_index": {
-      "name": 1
+      "keys": {
+        "name": 1
+      }
     }
   },
   "methods": {
