@@ -79,8 +79,13 @@ program
     console.log('Migrating up to: "%s"', to || 'all');
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
-    app.models.Migration.migrate('up', to, ()=>{
+    app.models.Migration.migrate('up', to)
+    .then(function (res) {
       console.log('Done.');
+      process.exit();
+    })
+    .catch(function (err) {
+      console.log(err);
       process.exit();
     })
   }).on('--help', function() {
@@ -99,8 +104,13 @@ program
     console.log('Rolling back to: "%s"', to || 'all');
     var server = program.server || process.cwd() + '/server/server.js';
     var app = require(path.resolve(process.cwd(), server));
-    app.models.Migration.migrate('down', to, ()=>{
+    app.models.Migration.migrate('down', to)
+    .then(function (res) {
       console.log('Done.');
+      process.exit();
+    })
+    .catch(function (err) {
+      console.log(err);
       process.exit();
     })
   }).on('--help', function() {
