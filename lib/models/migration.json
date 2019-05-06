@@ -17,7 +17,14 @@
   },
   "indexes": {
     "name_index": {
-      "name": 1
+      "keys": {
+        "name": 1
+      },
+      "options": {
+        "unique": true
+      },
+      "columns": "name",
+      "kind": "unique"
     }
   },
   "methods": {
