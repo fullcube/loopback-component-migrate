@@ -42,11 +42,11 @@ The usage is based on the node-db-migrate project.
 
 - `dataSource`
 
-  [String] : Datasource to connect the Migration and MigrationMap models to. *(default: db)*
+  [String] : Datasource to connect the Migration model to. *(default: db)*
 
 - `acls`
 
-  [Array] : ACLs to apply to Migration and MigrationMap models. *(default: [])*
+  [Array] : ACLs to apply to Migration model. *(default: [])*
 
 
 ## Running Migrations
