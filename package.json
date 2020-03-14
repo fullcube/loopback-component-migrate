@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "cli-prompt": "^0.6.0",
-    "commander": "^2.8.1",
+    "commander": "^5.0.0",
     "debug": "^2.6.8",
     "mkdirp": "^0.5.1"
   },
